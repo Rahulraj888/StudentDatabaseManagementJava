@@ -55,7 +55,6 @@ public class StudentDAO {
 
     /**
      * Adds student details to database
-     * @param student
      * @return boolean
      */
     public boolean addStudent(Student student) {
@@ -75,7 +74,6 @@ public class StudentDAO {
 
     /***
      * Delete data of student with given id
-     * @param id
      * @return boolean
      */
     public boolean deleteStudent(int id) {
@@ -91,7 +89,6 @@ public class StudentDAO {
 
     /**
      * fetches list of all students
-     * @return
      */
     public List<Student> getAllStudents() {
         List<Student> students = new ArrayList<>();
@@ -116,8 +113,6 @@ public class StudentDAO {
 
     /**
      * fetch details of student with given id
-     * @param id
-     * @return
      */
     public Student findStudentById(int id) {
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID + " = ?";
@@ -141,8 +136,6 @@ public class StudentDAO {
 
     /**
      * update active status of student
-     * @param id
-     * @param isActive
      * @return boolean
      */
     public boolean updateStudentStatus(int id, boolean isActive) {
