@@ -22,7 +22,7 @@ import static constants.DatabaseConstants.TABLE_NAME;
  */
 public class StudentDAO {
     private Connection connection;
-    private static final int MAX_RETRIES = 3; //maximum retries to get DB connection
+    private static final int MAX_RETRIES = 3; // Maximum retries to get DB connection
     private static final long RETRY_DELAY_MS = 2000; // 2 seconds delay
 
     /**
@@ -55,10 +55,11 @@ public class StudentDAO {
 
     /**
      * Adds student details to database
+     *
      * @return boolean
      */
     public boolean addStudent(Student student) {
-        String query = "INSERT INTO " + TABLE_NAME + " (id, first_name, last_name, email, active) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO " + TABLE_NAME + " (" + ID + ", " + FIRST_NAME + ", " + LAST_NAME + ", " + EMAIL + ", " + ACTIVE + ") VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, student.getId());
             statement.setString(2, student.getFirstName());
@@ -72,12 +73,13 @@ public class StudentDAO {
         return false;
     }
 
-    /***
+    /**
      * Delete data of student with given id
+     *
      * @return boolean
      */
     public boolean deleteStudent(int id) {
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             return statement.executeUpdate() > 0;
@@ -88,11 +90,11 @@ public class StudentDAO {
     }
 
     /**
-     * fetches list of all students
+     * Fetches list of all students
      */
     public List<Student> getAllStudents() {
         List<Student> students = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY first_name ASC";
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + FIRST_NAME + " ASC";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
@@ -112,7 +114,7 @@ public class StudentDAO {
     }
 
     /**
-     * fetch details of student with given id
+     * Fetch details of student with given id
      */
     public Student findStudentById(int id) {
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID + " = ?";
@@ -135,11 +137,12 @@ public class StudentDAO {
     }
 
     /**
-     * update active status of student
+     * Update active status of student
+     *
      * @return boolean
      */
     public boolean updateStudentStatus(int id, boolean isActive) {
-        String query = "UPDATE " + TABLE_NAME + " SET active = ? WHERE id = ?";
+        String query = "UPDATE " + TABLE_NAME + " SET " + ACTIVE + " = ? WHERE " + ID + " = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setBoolean(1, isActive);
             statement.setInt(2, id);

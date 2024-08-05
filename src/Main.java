@@ -1,10 +1,20 @@
 import model.Student;
 import model.StudentDAO;
+import view.MainView;
+import controller.StudentController;
+import view.AddStudentView;
 
 public class Main {
 
     public static void main(String[] args) {
-        dbCheck();
+//        dbCheck();
+
+        MainView mainView = new MainView();
+        AddStudentView addStudentView = new AddStudentView();
+        StudentDAO studentDAO = new StudentDAO();
+        StudentController controller = new StudentController(mainView, addStudentView, studentDAO);
+        mainView.setVisible(true);
+
     }
 
     static void dbCheck() {
