@@ -1,6 +1,8 @@
 package constants;
 
-//constants declared for table and column names
+/**
+ * constants declared for table and column names
+ */
 public class DatabaseConstants {
 
     public static final String TABLE_NAME = "students";

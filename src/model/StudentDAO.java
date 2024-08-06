@@ -22,7 +22,7 @@ import static constants.DatabaseConstants.TABLE_NAME;
  */
 public class StudentDAO {
     private Connection connection;
-    private static final int MAX_RETRIES = 3; // Maximum retries to get DB connection
+    private static final int MAX_RETRIES = 3; // number of retries to connect to database
     private static final long RETRY_DELAY_MS = 2000; // 2 seconds delay
 
     /**
@@ -38,12 +38,13 @@ public class StudentDAO {
             } catch (SQLException e) {
                 attempts++;
                 System.out.println("Attempt " + attempts + " failed: " + e.getMessage());
-                if (attempts >= MAX_RETRIES) {
+                if (attempts >= MAX_RETRIES) { //won't retry if connection fails for 3 times
                     System.out.println("Maximum retries reached. Could not connect to the database.");
                 } else {
+                    //retry to connect to database after delay of 2 sec
                     System.out.println("Retrying connection in " + (RETRY_DELAY_MS / 1000) + " seconds...");
                     try {
-                        Thread.sleep(RETRY_DELAY_MS);
+                        Thread.sleep(RETRY_DELAY_MS); //thread will sleep for 2 seconds and then retry for connection
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
                         System.out.println("Retry interrupted.");
@@ -59,7 +60,8 @@ public class StudentDAO {
      * @return boolean
      */
     public boolean addStudent(Student student) {
-        String query = "INSERT INTO " + TABLE_NAME + " (" + ID + ", " + FIRST_NAME + ", " + LAST_NAME + ", " + EMAIL + ", " + ACTIVE + ") VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO " + TABLE_NAME + " (" + ID + ", " + FIRST_NAME + ", " + LAST_NAME + ", "
+                + EMAIL + ", " + ACTIVE + ") VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, student.getId());
             statement.setString(2, student.getFirstName());
@@ -94,6 +96,7 @@ public class StudentDAO {
      */
     public List<Student> getAllStudents() {
         List<Student> students = new ArrayList<>();
+        //sort student details based on first names
         String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + FIRST_NAME + " ASC";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {

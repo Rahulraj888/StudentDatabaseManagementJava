@@ -5,7 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Stores information related to student
+ * Stores information related to student.
+ * Setter and getter annotation to set and get information
  */
 @Setter
 @Getter
@@ -23,5 +24,4 @@ public class Student {
         this.email = email;
         this.active = active;
     }
-
 }

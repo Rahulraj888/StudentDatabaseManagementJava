@@ -1,5 +1,8 @@
 package config;
 
+/**
+ * stores credentials required for student database
+ */
 public class LocalConfig {
 
     private static final String DATABASE_NAME = "studentmanagement";

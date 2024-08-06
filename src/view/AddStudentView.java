@@ -1,15 +1,25 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
+/**
+ * Popup view to add student
+ * inputs all the fields from the user and adds it to database
+ */
 public class AddStudentView extends JFrame {
     private final JTextField idField, firstNameField, lastNameField, emailField;
     private final JCheckBox activeCheckBox;
     private final JButton submitButton, cancelButton;
 
     public AddStudentView() {
+        //setting up the view
         setTitle("Add Student");
         setSize(300, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -37,6 +47,7 @@ public class AddStudentView extends JFrame {
         add(cancelButton);
     }
 
+    //methods to get value from field
     public String getId() {
         return idField.getText();
     }

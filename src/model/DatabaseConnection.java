@@ -1,6 +1,8 @@
 package model;
 
 
+import lombok.Getter;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,8 +12,10 @@ import static config.LocalConfig.DB_URL;
 import static config.LocalConfig.DB_USERNAME;
 
 /**
- * Handles connection to database
+ * Creates connection with database.
+ * singleton patter is followed for object creation
  */
+@Getter
 public class DatabaseConnection {
 
     private static DatabaseConnection databaseConnection; // singleton instance for database
@@ -26,11 +30,7 @@ public class DatabaseConnection {
         }
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
-
-//    Singleton pattern used for DB object creation
+    //    Singleton pattern used for DB object creation
     public static DatabaseConnection getInstance() throws SQLException {
         if (databaseConnection == null || databaseConnection.getConnection().isClosed()) {
             databaseConnection = new DatabaseConnection();
