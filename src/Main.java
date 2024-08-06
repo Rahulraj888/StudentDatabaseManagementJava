@@ -1,4 +1,5 @@
 import model.StudentDAO;
+import model.StudentDAOImpl;
 import view.MainView;
 import controller.StudentController;
 import view.AddStudentView;
@@ -9,10 +10,10 @@ import view.AddStudentView;
  */
 public class Main {
     public static void main(String[] args) {
-        MainView mainView = new MainView(); //setup main view
+        MainView mainView = new MainView();
         AddStudentView addStudentView = new AddStudentView();
-        StudentDAO studentDAO = new StudentDAO();
-        StudentController controller = new StudentController(mainView, addStudentView, studentDAO);
+        StudentDAO studentDAO = new StudentDAOImpl();
+        new StudentController(mainView, addStudentView, studentDAO);
         mainView.setVisible(true);
     }
 }

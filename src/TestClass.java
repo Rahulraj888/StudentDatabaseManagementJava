@@ -1,5 +1,6 @@
 import model.Student;
 import model.StudentDAO;
+import model.StudentDAOImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -28,7 +29,7 @@ public class TestClass {
     }
 
     static void dbCheck() {
-        StudentDAO studentDAO = new StudentDAO();
+        StudentDAO studentDAO = new StudentDAOImpl();
         System.out.println(studentDAO.addStudent(new Student(1, "Rahul", "Reddaveni",
                 "test@gmail.com", true)));
         System.out.println(studentDAO.addStudent(new Student(2, "Malavika", "Ajit",
