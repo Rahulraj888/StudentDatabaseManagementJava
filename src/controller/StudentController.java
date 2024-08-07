@@ -5,9 +5,12 @@ import model.StudentDAO;
 import view.AddStudentView;
 import view.MainView;
 
-import javax.swing.JOptionPane;
 import java.util.List;
 
+/**
+ * handles communication between model and view part
+ * sets callback functions for events, fetched data from database and  inflates UI
+ */
 public class StudentController {
     private final MainView mainView;
     private final AddStudentView addStudentView;
@@ -18,6 +21,7 @@ public class StudentController {
         this.addStudentView = addStudentView;
         this.studentDAO = studentDAO;
 
+        //add callback functionality for all button clicks
         this.mainView.setAddStudentButtonActionListener(e -> addStudentView.setVisible(true));
         this.mainView.setDeleteStudentButtonActionListener(e -> deleteStudent());
         this.mainView.setActivateStudentButtonActionListener(e -> activateStudent());
@@ -25,20 +29,17 @@ public class StudentController {
         this.mainView.setDisplayStudentsButtonActionListener(e -> refreshStudentList());
         this.mainView.setSearchStudentButtonActionListener(e -> searchStudent());
 
+        //callback for button click events in add student view
         this.addStudentView.setSubmitButtonActionListener(e -> addStudent());
         this.addStudentView.setCancelButtonActionListener(e -> addStudentView.dispose());
     }
 
+    //callback function to add a student
     private void addStudent() {
         try {
-            int id = Integer.parseInt(addStudentView.getId());
-            String firstName = addStudentView.getFirstName();
-            String lastName = addStudentView.getLastName();
-            String email = addStudentView.getEmail();
-            boolean active = addStudentView.isActive();
-            Student student = new Student(id, firstName, lastName, email, active);
+            Student student = validateAndFetchDetails();
+            if (student == null) return;
             boolean isAdded = studentDAO.addStudent(student);
-
             if (isAdded) {
                 addStudentView.showMessage("Student added successfully!");
                 addStudentView.dispose();
@@ -51,13 +52,34 @@ public class StudentController {
         }
     }
 
-    private void deleteStudent() {
-        Integer id = getStudentIdFromUser("Enter the student ID to delete:");
-        if (id == null) return;
-        if (studentDAO.findStudentById(id) == null) {
-            mainView.showMessage("Student ID not found.");
-            return;
+    //validate the entered data to add student
+    private Student validateAndFetchDetails() {
+        String idString = addStudentView.getId();
+        String firstName = addStudentView.getFirstName();
+        String lastName = addStudentView.getLastName();
+        String email = addStudentView.getEmail();
+        boolean active = addStudentView.isActive();
+        if (idString.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()) {
+            addStudentView.showMessage("All fields are required.");
+            return null;
         }
+        return new Student(Integer.parseInt(addStudentView.getId()), firstName, lastName, email, active);
+    }
+
+    //gets id and checks whether we have student with that ID.
+    private Integer getAndValidateID() {
+        Integer id = getStudentIdFromUser("Enter the student ID to delete:");
+        if (id == null || studentDAO.findStudentById(id) == null) {
+            mainView.showMessage("Student ID not found.");
+            return null;
+        }
+        return id;
+    }
+
+    //delete student with given ID
+    private void deleteStudent() {
+        Integer id = getAndValidateID();
+        if (id == null) return;
         if (studentDAO.deleteStudent(id)) {
             mainView.showMessage("Student deleted successfully!");
             refreshStudentList();
@@ -66,13 +88,10 @@ public class StudentController {
         }
     }
 
+    //activate student with given ID
     private void activateStudent() {
-        Integer id = getStudentIdFromUser("Enter the student ID to activate:");
+        Integer id = getAndValidateID();
         if (id == null) return;
-        if (studentDAO.findStudentById(id) == null) {
-            mainView.showMessage("Student ID not found.");
-            return;
-        }
         if (studentDAO.updateStudentStatus(id, true)) {
             mainView.showMessage("Student activated successfully!");
             refreshStudentList();
@@ -81,13 +100,10 @@ public class StudentController {
         }
     }
 
+    //deactivate student with given ID
     private void deactivateStudent() {
-        Integer id = getStudentIdFromUser("Enter the student ID to deactivate:");
+        Integer id = getAndValidateID();
         if (id == null) return;
-        if (studentDAO.findStudentById(id) == null) {
-            mainView.showMessage("Student ID not found.");
-            return;
-        }
         if (studentDAO.updateStudentStatus(id, false)) {
             mainView.showMessage("Student deactivated successfully!");
             refreshStudentList();
@@ -96,6 +112,7 @@ public class StudentController {
         }
     }
 
+    //tries to parse input entered by user validates it
     private Integer getStudentIdFromUser(String message) {
         String idStr = mainView.getStudentIdFromUser(message);
         try {
@@ -106,11 +123,13 @@ public class StudentController {
         }
     }
 
-    private void refreshStudentList() {
+    //method to refresh student list
+    public void refreshStudentList() {
         List<Student> students = studentDAO.getAllStudents();
         mainView.displayStudents(students);
     }
 
+    //search for student with given ID
     private void searchStudent() {
         Integer id = getStudentIdFromUser("Enter the student ID to search:");
         if (id == null) return;
@@ -118,7 +137,7 @@ public class StudentController {
         if (student != null) {
             mainView.displayStudents(List.of(student));
         } else {
-            mainView.showMessage("Student not found.");
+            mainView.showMessage("Student not found for given ID.");
         }
     }
 }

@@ -33,6 +33,7 @@ public class AddStudentView extends JFrame {
         submitButton = new JButton("Submit");
         cancelButton = new JButton("Cancel");
 
+        //add label and text fields
         add(new JLabel("ID:"));
         add(idField);
         add(new JLabel("First Name:"));
@@ -68,6 +69,7 @@ public class AddStudentView extends JFrame {
         return activeCheckBox.isSelected();
     }
 
+    //add functions for callback
     public void setSubmitButtonActionListener(ActionListener actionListener) {
         submitButton.addActionListener(actionListener);
     }

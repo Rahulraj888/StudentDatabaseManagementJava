@@ -12,6 +12,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Component;
 
+/**
+ * Customize each list item
+ */
 public class StudentListRenderer extends JPanel implements ListCellRenderer<Student> {
     private final JLabel idLabel, nameLabel, emailLabel, activeLabel;
 
@@ -39,13 +42,6 @@ public class StudentListRenderer extends JPanel implements ListCellRenderer<Stud
         emailLabel.setText("Email: " + student.getEmail());
         activeLabel.setText("Active: " + (student.isActive() ? "Yes" : "No"));
 
-//        if (isSelected) {
-//            setBackground(list.getSelectionBackground());
-//            setForeground(list.getSelectionForeground());
-//        } else {
-//            setBackground(list.getBackground());
-//            setForeground(list.getForeground());
-//        }
 
         setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(10, 10, 10, 10),

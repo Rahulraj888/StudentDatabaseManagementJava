@@ -13,7 +13,8 @@ public class Main {
         MainView mainView = new MainView();
         AddStudentView addStudentView = new AddStudentView();
         StudentDAO studentDAO = new StudentDAOImpl();
-        new StudentController(mainView, addStudentView, studentDAO);
+        StudentController studentController = new StudentController(mainView, addStudentView, studentDAO);
+        studentController.refreshStudentList();
         mainView.setVisible(true);
     }
 }
