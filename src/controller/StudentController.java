@@ -68,7 +68,7 @@ public class StudentController {
 
     //gets id and checks whether we have student with that ID.
     private Integer getAndValidateID() {
-        Integer id = getStudentIdFromUser("Enter the student ID to delete:");
+        Integer id = getStudentIdFromUser("Enter the student ID");
         if (id == null || studentDAO.findStudentById(id) == null) {
             mainView.showMessage("Student ID not found.");
             return null;

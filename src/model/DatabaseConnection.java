@@ -1,6 +1,5 @@
 package model;
 
-
 import lombok.Getter;
 
 import java.sql.Connection;
